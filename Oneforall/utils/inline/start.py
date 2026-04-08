@@ -1,50 +1,60 @@
+import random
 from pyrogram.types import InlineKeyboardButton
+from pyrogram.enums import ButtonStyle
 import config
 from Oneforall import app
 
-
-# safe button function (NO CRASH)
-def btn(text, **kwargs):
+def btn(text, emoji_id, style=ButtonStyle.DEFAULT, **kwargs):
+    """
+    Har button ke liye specific emoji_id use karega.
+    """
     try:
         return InlineKeyboardButton(
             text=text,
-            icon_custom_emoji_id=6312260233171312151,
+            icon_custom_emoji_id=emoji_id,
+            style=style,
             **kwargs
         )
     except TypeError:
-        return InlineKeyboardButton(
-            text=text,
-            **kwargs
-        )
-
+        # Fallback for older versions
+        return InlineKeyboardButton(text=text, **kwargs)
 
 def start_panel(_):
     buttons = [
         [
-            btn(_["S_B_1"], url=f"https://t.me/{app.username}?startgroup=true"),
-            btn(_["S_B_2"], url=config.SUPPORT_CHAT),
+            # Add to Group - 💞 (5438224604499819092)
+            btn(_["S_B_1"], 5438224604499819092, url=f"https://t.me/{app.username}?startgroup=true", style=ButtonStyle.SUCCESS),
+            # Support - 💜 (6026236216079290036)
+            btn(_["S_B_2"], 6026236216079290036, url=config.SUPPORT_CHAT, style=ButtonStyle.DANGER),
         ],
     ]
     return buttons
 
-
 def private_panel(_):
     buttons = [
         [
-            btn(_["S_B_3"], url=f"https://t.me/{app.username}?startgroup=true")
+            # Add to Group - 🥰 (5436346075998864232)
+            btn(_["S_B_3"], 5436346075998864232, url=f"https://t.me/{app.username}?startgroup=true", style=ButtonStyle.SUCCESS)
         ],
         [
-            btn(_["S_B_2"], url=config.SUPPORT_CHAT),
-            btn(_["S_B_6"], url=config.SUPPORT_CHANNEL),
+            # Profile - 💜 (6026236216079290036)
+            btn("ᴇʀᴇɴ ʏᴇᴀɢᴇʀ", 6026236216079290036, url="https://t.me/toxication_infinity", style=ButtonStyle.PRIMARY),
+            # Support - 💞 (5438224604499819092)
+            btn(_["S_B_2"], 5438224604499819092, url=config.SUPPORT_CHAT, style=ButtonStyle.DANGER),
         ],
         [
-            btn(_["S_B_4"], callback_data="settings_back_helper")
+            # Help/Settings - ✅ (6001604106190330097)
+            btn(_["S_B_4"], 6001604106190330097, callback_data="settings_back_helper", style=ButtonStyle.PRIMARY)
         ],
         [
-            btn(_["S_B_5"], url="https://t.me/docker_git_bit")
+            # Channel - 👑 (6089090515540644835)
+            btn(_["S_B_6"], 6089090515540644835, url=config.SUPPORT_CHANNEL, style=ButtonStyle.DANGER),
+            # Other Channel - 💜 (6026236216079290036)
+            btn(_["S_B_5"], 6026236216079290036, url="https://t.me/docker_git_bit", style=ButtonStyle.PRIMARY)
         ],
         [
-            btn("✦ ᴡєʙ ɢᴧϻєꜱ 🎮✨", url="https://telegram-game-hub.vercel.app")
+            # Website Button - 🎵 (6026256492619895014)
+            btn("「 ⌯ ᴜᴘᴘєʀϻσσɴ ᴛᴜηєꜱ ⌯ 」", 6026256492619895014, url="https://uppermooninfinity.jo3.org/", style=ButtonStyle.SUCCESS)
         ],
     ]
     return buttons
