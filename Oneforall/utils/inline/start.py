@@ -38,9 +38,9 @@ def private_panel(_):
         ],
         [
             # Profile - 💜 (6026236216079290036)
-            btn("ᴇʀᴇɴ ʏᴇᴀɢᴇʀ", 6026236216079290036, url="https://t.me/toxication_infinity", style=ButtonStyle.PRIMARY),
+            btn("˹ 𓆩Q֟፝υєєη𓆪 ˼", 6026236216079290036, url="tg://openmessage?user_id=8676835917", style=ButtonStyle.DANGER),
             # Support - 💞 (5438224604499819092)
-            btn(_["S_B_2"], 5438224604499819092, url=config.SUPPORT_CHAT, style=ButtonStyle.DANGER),
+            btn(_["S_B_2"], 5438224604499819092, url=config.SUPPORT_CHAT, style=ButtonStyle.PRIMARY),
         ],
         [
             # Help/Settings - ✅ (6001604106190330097)
@@ -48,9 +48,9 @@ def private_panel(_):
         ],
         [
             # Channel - 👑 (6089090515540644835)
-            btn(_["S_B_6"], 6089090515540644835, url=config.SUPPORT_CHANNEL, style=ButtonStyle.DANGER),
+            btn(_["S_B_6"], 6089090515540644835, url=config.SUPPORT_CHANNEL, style=ButtonStyle.PRIMARY),
             # Other Channel - 💜 (6026236216079290036)
-            btn(_["S_B_5"], 6026236216079290036, url="https://t.me/docker_git_bit", style=ButtonStyle.PRIMARY)
+            btn(_["S_B_5"], 6026236216079290036, url="tg://openmessage?user_id=8564072723", style=ButtonStyle.DANGER)
         ],
         [
             # Website Button - 🎵 (6026256492619895014)
