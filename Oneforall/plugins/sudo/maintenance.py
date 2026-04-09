@@ -44,4 +44,4 @@ async def maintenance(client, message: Message):
         return await message.reply_text(_["maint_3"].format(app.mention))
 
     else:
-        return await message.reply_text(usage)reply_text(usage)
+      return await message.reply_text(usage)
