@@ -19,21 +19,29 @@ async def maintenance(client, message: Message):
         _ = get_string(language)
     except:
         _ = get_string("en")
+
     usage = _["maint_1"]
+
     if len(message.command) != 2:
         return await message.reply_text(usage)
+
     state = message.text.split(None, 1)[1].strip().lower()
+
+    # ✅ ENABLE
     if state == "enable":
-        if await is_maintenance() is False:
-            await message.reply_text(_["maint_4"])
-        else:
-            await maintenance_on()
-            await message.reply_text(_["maint_2"].format(app.mention))
+        if await is_maintenance():
+            return await message.reply_text(_["maint_5"])  # already enabled
+
+        await maintenance_on()
+        return await message.reply_text(_["maint_2"].format(app.mention))
+
+    # ✅ DISABLE
     elif state == "disable":
-        if await is_maintenance() is False:
-            await maintenance_off()
-            await message.reply_text(_["maint_3"].format(app.mention))
-        else:
-            await message.reply_text(_["maint_5"])
+        if not await is_maintenance():
+            return await message.reply_text(_["maint_4"])  # already disabled
+
+        await maintenance_off()
+        return await message.reply_text(_["maint_3"].format(app.mention))
+
     else:
-        await message.reply_text(usage)
+        return await message.reply_text(usage)reply_text(usage)
