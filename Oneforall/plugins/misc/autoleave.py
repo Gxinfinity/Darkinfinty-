@@ -1,6 +1,5 @@
 import asyncio
 from datetime import datetime
-from pyrogram import filters
 from pyrogram.enums import ChatType
 
 import config
@@ -9,42 +8,16 @@ from Oneforall.core.call import Hotty, autoend
 from Oneforall.utils.database import get_client, is_active_chat, is_autoend
 
 
-# ================== GLOBAL SWITCH ==================
-AUTO_LEAVE_ENABLED = False
-
-
-# ================== COMMAND ==================
-@app.on_message(filters.command("autoleave") & filters.user(config.SUDO_USERS))
-async def set_autoleave(client, message):
-    global AUTO_LEAVE_ENABLED
-
-    if len(message.command) < 2:
-        return await message.reply_text(
-            "✨ Usage:\n`/autoleave enable` or `/autoleave disable`"
-        )
-
-    query = message.command[1].lower()
-
-    if query == "enable":
-        AUTO_LEAVE_ENABLED = True
-        await message.reply_text("✅ Auto-leave globally enabled.")
-    elif query == "disable":
-        AUTO_LEAVE_ENABLED = False
-        await message.reply_text("❌ Auto-leave globally disabled.")
-    else:
-        await message.reply_text("❗ Use only `enable` or `disable`.")
-
-
 # ================== AUTO LEAVE ==================
 async def auto_leave():
-    await asyncio.sleep(10)
+    await asyncio.sleep(15)
 
     while True:
         try:
             await asyncio.sleep(900)
 
-            # 🔥 GLOBAL CHECK
-            if not AUTO_LEAVE_ENABLED:
+            # 🔥 HARD GLOBAL CHECK
+            if not config.AUTO_LEAVING_ASSISTANT:
                 continue
 
             from Oneforall.core.userbot import assistants
@@ -52,14 +25,9 @@ async def auto_leave():
             for num in assistants:
                 client = await get_client(num)
                 left = 0
-                visited = set()
 
-                async for dialog in client.get_dialogs():
-                    chat = dialog.chat
-
-                    if chat.id in visited:
-                        continue
-                    visited.add(chat.id)
+                async for i in client.get_dialogs():
+                    chat = i.chat
 
                     if chat.type not in [
                         ChatType.SUPERGROUP,
@@ -68,17 +36,30 @@ async def auto_leave():
                     ]:
                         continue
 
-                    if chat.id in [config.LOGGER_ID, -1003809966719]:
+                    if chat.id in [
+                        config.LOGGER_ID,
+                        -1001626004802,
+                        -1001876397776,
+                    ]:
                         continue
 
                     if left >= 20:
                         break
 
+                    # 🔥 SAFE CHECK
                     try:
-                        if not await is_active_chat(chat.id):
-                            await client.leave_chat(chat.id)
-                            left += 1
-                            await asyncio.sleep(1)
+                        active = await is_active_chat(chat.id)
+                    except:
+                        active = True  # safety
+
+                    # ❌ inactive hone pe bhi leave mat kar (safe mode)
+                    if not active:
+                        continue
+
+                    try:
+                        await client.leave_chat(chat.id)
+                        left += 1
+                        await asyncio.sleep(1)
                     except:
                         continue
 
@@ -88,7 +69,7 @@ async def auto_leave():
 
 # ================== AUTO END ==================
 async def auto_end():
-    await asyncio.sleep(10)
+    await asyncio.sleep(15)
 
     while True:
         try:
@@ -124,12 +105,11 @@ async def auto_end():
             print(f"[AUTO_END ERROR]: {e}")
 
 
-# ================== START TASKS ==================
+# 🔥 SAFE START (delay ke baad)
 async def start_tasks():
+    await asyncio.sleep(20)
     asyncio.create_task(auto_leave())
     asyncio.create_task(auto_end())
 
 
-@app.on_message(filters.command("start"))
-async def starter(_, __):
-    await start_tasks()
+asyncio.get_event_loop().create_task(start_tasks())
