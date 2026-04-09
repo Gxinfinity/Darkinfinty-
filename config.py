@@ -57,7 +57,8 @@ SUPPORT_CHANNEL = os.getenv("SUPPORT_CHANNEL", "https://t.me/PhilosSoul")
 SUPPORT_CHAT = os.getenv("SUPPORT_CHAT", "https://t.me/chattingzone0")
 
 # Set this to True if you want the assistant to automatically leave chats after an interval
-AUTO_LEAVING_ASSISTANT = bool(os.getenv("AUTO_LEAVING_ASSISTANT", False))
+AUTO_LEAVING_ASSISTANT = os.getenv("AUTO_LEAVING_ASSISTANT", "False").lower() == "true"
+
 
 # Auto Gcast/Broadcast Handler (True = broadcast on , False = broadcast off During Hosting, Dont Do anything here.)
 AUTO_GCAST = os.getenv("AUTO_GCAST")
